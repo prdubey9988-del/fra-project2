@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Risk Analytics — ICICI Bank vs. Yes Bank Credit Risk Deep Dive</title>
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js v4.4.2 & Annotation Plugin v3.0.1 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+</head>
+<body>
+
+  <!-- Ambient Light Orbs & Grid Overlay -->
+  <div class="ambient-bg">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="dashboard-container">
+
+    <!-- Topbar / Branding -->
+    <header class="header-topbar">
+      <div class="brand-badge">
+        <div class="brand-icon">
+          <i class="fa-solid fa-chart-line-up"></i>
+        </div>
+        <div class="brand-text">
+          <h1>FRA ANALYTICS LAB</h1>
+          <p>Credit Risk & Asset Quality Forensics</p>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <span class="meta-pill live-pulse">FY2015 – FY2024 (10-Yr Study)</span>
+        <span class="meta-pill"><i class="fa-solid fa-building-columns"></i> Benchmark: Nifty Bank</span>
+        <span class="meta-pill"><i class="fa-solid fa-shield-halved"></i> RBI Pillar 3 Data</span>
+      </div>
+    </header>
+
+    <!-- Hero / Executive Summary -->
+    <section class="hero-section">
+      <div class="hero-tag">
+        <i class="fa-solid fa-graduation-cap"></i> MBA Financial Risk Analytics — Group Project 2
+      </div>
+      <h2 class="hero-title">Financial Risk Analytics — Credit Risk Deep Dive</h2>
+      <p class="hero-subtitle">
+        A 10-year forensic investigation comparing <strong>Systematic Macro Shocks</strong> vs. <strong>Idiosyncratic Governance Risk</strong> across the Indian banking sector. Contrasting the corporate stress purge and retail turnaround of <span class="highlight-icici">ICICI Bank</span> against the divergence, moratorium, and public-private reconstruction of <span class="highlight-yes">Yes Bank</span>.
+      </p>
+
+      <!-- KPI Stat Counter Cards Grid -->
+      <div class="kpi-grid">
+        <!-- Card 1: ICICI GNPA Arc -->
+        <div class="kpi-card accent-icici">
+          <div class="kpi-header">
+            <span class="kpi-title">ICICI Peak GNPA & Recovery</span>
+            <span class="kpi-badge badge-icici">Large Private Bank</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-value" id="kpi-icici-peak">8.84%</span>
+            <span class="kpi-subvalue">→ <span id="kpi-icici-curr">2.16%</span></span>
+          </div>
+          <div class="kpi-footer">
+            <span class="delta-positive"><i class="fa-solid fa-arrow-down"></i> -668 bps</span>
+            <span>from FY18 peak; GNPA ₹54k → ₹28k Cr</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Yes Bank GNPA Arc -->
+        <div class="kpi-card accent-yes">
+          <div class="kpi-header">
+            <span class="kpi-title">Yes Bank Peak GNPA & Collapse</span>
+            <span class="kpi-badge badge-yes">Mid-sized Private</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-value" id="kpi-yes-peak">16.80%</span>
+            <span class="kpi-subvalue">→ <span id="kpi-yes-curr">1.70%</span></span>
+          </div>
+          <div class="kpi-footer">
+            <span class="delta-negative"><i class="fa-solid fa-triangle-exclamation"></i> FY20 Shock</span>
+            <span>₹37,272 Cr fresh slippages in 1 yr</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Peak Credit Cost Divergence -->
+        <div class="kpi-card accent-amber">
+          <div class="kpi-header">
+            <span class="kpi-title">Credit Cost Peak Divergence</span>
+            <span class="kpi-badge badge-amber">Provisioning Shock</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-value" id="kpi-creditcost-peak">16.74%</span>
+            <span class="kpi-subvalue">vs 2.85%</span>
+          </div>
+          <div class="kpi-footer">
+            <span>Yes Bank FY20 credit cost: 5.9x ICICI FY19 peak</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Systematic vs Idiosyncratic Market Beta -->
+        <div class="kpi-card accent-emerald">
+          <div class="kpi-header">
+            <span class="kpi-title">Nifty Bank Correlation & Beta</span>
+            <span class="kpi-badge badge-purple">Market Risk</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-value">0.861</span>
+            <span class="kpi-subvalue">vs 0.492</span>
+          </div>
+          <div class="kpi-footer">
+            <span>ICICI (β=1.04) track macro; Yes decoupled by governance</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Entity Profiles Side-by-Side -->
+      <div class="entity-profiles-grid">
+        <!-- ICICI Bank Profile Card -->
+        <div class="profile-card icici-card">
+          <div>
+            <div class="profile-header">
+              <div class="profile-title-group">
+                <div class="profile-avatar icici">IC</div>
+                <div>
+                  <h3 class="profile-name">ICICI Bank Limited</h3>
+                  <p class="profile-category">Large Private Sector Bank | Tier-1 D-SIB</p>
+                </div>
+              </div>
+              <span class="kpi-badge badge-icici">Entity Under Analysis</span>
+            </div>
+            <p class="profile-desc">
+              India's 2nd largest private lender. Suffered aggressive corporate capex cycle NPA build-up (power, steel, infra) peaking in FY2018. Restructured leadership under Sandeep Bakhshi, wrote off / sold ₹14k Cr of bad loans in FY19, and pivoted to secured retail lending.
+            </p>
+            <div class="profile-meta-grid">
+              <div class="meta-item">
+                <div class="meta-label">Gross Advances (FY24)</div>
+                <div class="meta-val">₹12,94,537 Cr</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Gross NPA Peak (FY18)</div>
+                <div class="meta-val">₹54,063 Cr (8.84%)</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Provision Coverage (FY24)</div>
+                <div class="meta-val">80.8%</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Primary Risk Catalyst</div>
+                <div class="meta-val">Corporate Infra Concentration</div>
+              </div>
+            </div>
+            <div class="profile-peers">
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Peer Group:</span>
+              <span class="peer-tag">HDFC Bank</span>
+              <span class="peer-tag">Axis Bank</span>
+              <span class="peer-tag">Kotak Mahindra Bank</span>
+            </div>
+          </div>
+          <button class="profile-cta btn-icici" onclick="switchMainTab('icici')">
+            <i class="fa-solid fa-magnifying-glass-chart"></i> Explore ICICI Bank Deep Dive
+          </button>
+        </div>
+
+        <!-- Yes Bank Profile Card -->
+        <div class="profile-card yes-card">
+          <div>
+            <div class="profile-header">
+              <div class="profile-title-group">
+                <div class="profile-avatar yes">YB</div>
+                <div>
+                  <h3 class="profile-name">Yes Bank Limited</h3>
+                  <p class="profile-category">Mid-sized Private Bank | Post-Moratorium Reconstructed</p>
+                </div>
+              </div>
+              <span class="kpi-badge badge-yes">Entity Under Analysis</span>
+            </div>
+            <p class="profile-desc">
+              Aggressive corporate promoter lender. Under-reported NPAs (RBI Divergences FY16-FY18). After founder Rana Kapoor was ousted in Jan 2019, hidden balance-sheet stress surfaced. RBI imposed moratorium in March 2020; saved via ₹10k Cr SBI-led consortium rescue and ₹48,000 Cr stressed-loan sale to JC Flowers ARC.
+            </p>
+            <div class="profile-meta-grid">
+              <div class="meta-item">
+                <div class="meta-label">Gross Advances (FY24)</div>
+                <div class="meta-val">₹2,34,294 Cr</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Gross NPA Peak (FY20)</div>
+                <div class="meta-val">₹32,878 Cr (16.80%)</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Provision Coverage (FY24)</div>
+                <div class="meta-val">66.6%</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Primary Risk Catalyst</div>
+                <div class="meta-val">Governance & Divergence Fraud</div>
+              </div>
+            </div>
+            <div class="profile-peers">
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Peer Group:</span>
+              <span class="peer-tag">Federal Bank</span>
+              <span class="peer-tag">RBL Bank</span>
+              <span class="peer-tag">IDFC First Bank</span>
+              <span class="peer-tag">Bandhan Bank</span>
+            </div>
+          </div>
+          <button class="profile-cta btn-yes" onclick="switchMainTab('yesbank')">
+            <i class="fa-solid fa-triangle-exclamation"></i> Explore Yes Bank Forensics
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Navigation Tab Bar -->
+    <nav class="nav-tab-wrapper">
+      <div class="nav-tab-bar">
+        <button class="tab-btn active tab-icici" id="tab-btn-icici" onclick="switchMainTab('icici')">
+          <i class="fa-solid fa-chart-area"></i> ICICI Bank Deep Dive
+        </button>
+        <button class="tab-btn" id="tab-btn-yesbank" onclick="switchMainTab('yesbank')">
+          <i class="fa-solid fa-building-circle-exclamation"></i> Yes Bank Deep Dive
+        </button>
+        <button class="tab-btn" id="tab-btn-comparative" onclick="switchMainTab('comparative')">
+          <i class="fa-solid fa-scale-balanced"></i> Comparative Analysis
+        </button>
+        <button class="tab-btn" id="tab-btn-npamovement" onclick="switchMainTab('npamovement')">
+          <i class="fa-solid fa-water"></i> NPA Movement Flow
+        </button>
+        <button class="tab-btn" id="tab-btn-timeline" onclick="switchMainTab('timeline')">
+          <i class="fa-solid fa-timeline"></i> Event Timeline & Risk
+        </button>
+        <button class="tab-btn" id="tab-btn-stock" onclick="switchMainTab('stock')">
+          <i class="fa-solid fa-arrow-trend-up"></i> Share Price & Market
+        </button>
+        <button class="tab-btn" id="tab-btn-methodology" onclick="switchMainTab('methodology')">
+          <i class="fa-solid fa-book-bookmark"></i> Methodology & Notes
+        </button>
+      </div>
+    </nav>
+
+    <!-- ====================================================================
+         PANEL 1 & 2: CREDIT RISK METRICS (ICICI & YES BANK VIEWS)
+         ==================================================================== -->
+    <main class="view-panel active" id="view-credit-risk">
+      <div class="section-header">
+        <div class="section-tag">
+          <i class="fa-solid fa-sliders"></i> Multi-Year Credit Risk Ratio Benchmarking
+        </div>
+        <h3 class="section-title" id="panel-bank-title">ICICI Bank: Credit Risk & Asset Quality Arc</h3>
+        <p class="section-subtitle" id="panel-bank-subtitle">
+          Comparing 10-year credit risk indicators against peer group average & dispersion band (FY2015 to FY2024).
+        </p>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="metrics-control-bar">
+        <div class="control-group">
+          <span class="control-label">Focus Entity:</span>
+          <div class="segmented-control">
+            <button class="segment-btn active icici-active" id="btn-select-icici" onclick="selectEntity('ICICI Bank')">
+              ICICI Bank
+            </button>
+            <button class="segment-btn" id="btn-select-yes" onclick="selectEntity('Yes Bank')">
+              Yes Bank
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="control-label">Display Options:</span>
+          <button class="segment-btn" id="btn-toggle-peerband" onclick="togglePeerBand()">
+            <i class="fa-solid fa-chart-line"></i> Peer Band: OFF
+          </button>
+          <button class="segment-btn active" id="btn-toggle-annotations" onclick="toggleEventAnnotations()">
+            <i class="fa-solid fa-flag"></i> Event Flags: ON
+          </button>
+        </div>
+      </div>
+
+      <!-- Metric Buttons Bar -->
+      <div class="metric-tabs-bar">
+        <button class="metric-btn active icici-theme" id="mbtn-gnpa_pct" onclick="selectMetric('gnpa_pct')">
+          <i class="fa-solid fa-chart-line"></i> GNPA Ratio (%)
+        </button>
+        <button class="metric-btn" id="mbtn-nnpa_pct" onclick="selectMetric('nnpa_pct')">
+          <i class="fa-solid fa-shield-virus"></i> NNPA Ratio (%)
+        </button>
+        <button class="metric-btn" id="mbtn-pcr_pct" onclick="selectMetric('pcr_pct')">
+          <i class="fa-solid fa-umbrella"></i> Provision Coverage (PCR %)
+        </button>
+        <button class="metric-btn" id="mbtn-slippage_ratio" onclick="selectMetric('slippage_ratio')">
+          <i class="fa-solid fa-arrow-trend-down"></i> Slippage Ratio (%)
+        </button>
+        <button class="metric-btn" id="mbtn-credit_cost" onclick="selectMetric('credit_cost')">
+          <i class="fa-solid fa-coins"></i> Credit Cost (%)
+        </button>
+        <button class="metric-btn" id="mbtn-writeoff_ratio" onclick="selectMetric('writeoff_ratio')">
+          <i class="fa-solid fa-eraser"></i> Write-Off Ratio (%)
+        </button>
+      </div>
+
+      <!-- Formula & Regulatory Context Banner -->
+      <div class="metric-formula-banner">
+        <div>
+          <span class="formula-text" id="metric-desc-text">Gross Non-Performing Assets as % of Gross Advances. Measures gross portfolio impairment under RBI 90-day delinquency norm.</span>
+        </div>
+        <div>
+          <span class="formula-code" id="metric-formula-code">Formula: (Gross NPA / Gross Advances) × 100</span>
+        </div>
+      </div>
+
+      <!-- Metric Stats Ribbon -->
+      <div class="metric-stats-ribbon">
+        <div class="ribbon-card">
+          <div class="ribbon-label">Entity Current (FY24)</div>
+          <div class="ribbon-value" id="stat-curr-val">2.16%</div>
+          <div class="ribbon-sub" id="stat-curr-sub">Cleanest since FY15</div>
+        </div>
+        <div class="ribbon-card">
+          <div class="ribbon-label">Entity 10-Yr Peak</div>
+          <div class="ribbon-value" id="stat-peak-val">8.84%</div>
+          <div class="ribbon-sub" id="stat-peak-sub">FY2018 (₹54,063 Cr)</div>
+        </div>
+        <div class="ribbon-card">
+          <div class="ribbon-label">10-Yr Average</div>
+          <div class="ribbon-value" id="stat-avg-val">5.21%</div>
+          <div class="ribbon-sub">Cycle mean</div>
+        </div>
+        <div class="ribbon-card">
+          <div class="ribbon-label">Peer Group Mean (FY24)</div>
+          <div class="ribbon-value" id="stat-peer-val">1.35%</div>
+          <div class="ribbon-sub" id="stat-peer-sub">HDFC, Axis, Kotak</div>
+        </div>
+        <div class="ribbon-card">
+          <div class="ribbon-label">10-Yr Net Change</div>
+          <div class="ribbon-value" id="stat-change-val">-1.62%</div>
+          <div class="ribbon-sub" id="stat-change-sub">FY24 vs FY15</div>
+        </div>
+      </div>
+
+      <!-- Main Chart Card -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title-wrap">
+            <h3 id="chart-main-title">ICICI Bank vs. Large Private Peers: GNPA Ratio (%)</h3>
+            <p id="chart-main-subtitle">Entity line (bold cyan), peer average (dashed purple), and peer range dispersion band (shaded).</p>
+          </div>
+          <div id="chart-legend-custom"></div>
+        </div>
+
+        <div class="chart-canvas-container">
+          <canvas id="creditRiskChart"></canvas>
+        </div>
+
+        <!-- Peer Checkbox Bar -->
+        <div class="peer-checkbox-bar" id="peer-checkboxes-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Forensic Insight Callout Box -->
+      <div class="insight-callout">
+        <div class="insight-icon">
+          <i class="fa-solid fa-lightbulb"></i>
+        </div>
+        <div class="insight-body">
+          <h4 id="insight-title">Forensic Asset Quality Takeaway</h4>
+          <p id="insight-content">
+            ICICI Bank's GNPA ratio surged from 3.78% in FY15 to 8.84% in FY18 following the RBI Asset Quality Review (AQR) and the Feb 12 revised framework, exposing aggressive corporate consortium lending to power and steel. Under new CEO Sandeep Bakhshi from FY19, ICICI executed aggressive write-offs and pivoted toward secured retail, driving GNPA down to 2.16% by FY24.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====================================================================
+         PANEL 3: NPA MOVEMENT FLOW (WATERFALL & ANNUAL FLOW)
+         ==================================================================== -->
+    <section class="view-panel" id="view-npamovement">
+      <div class="section-header">
+        <div class="section-tag">
+          <i class="fa-solid fa-water"></i> Forensic Asset Quality Accounting Flow
+        </div>
+        <h3 class="section-title">Gross NPA Movement: Additions vs. Reductions</h3>
+        <p class="section-subtitle">
+          Deconstructing the non-performing asset lifecycle: Opening Gross NPA + Fresh Slippages − Upgrades & Recoveries − Write-Offs = Closing Gross NPA.
+        </p>
+      </div>
+
+      <!-- Accounting Formula Banner -->
+      <div class="metric-formula-banner">
+        <div>
+          <span class="formula-text"><strong>Accounting Identity:</strong> Closing Gross NPA<sub>t</sub> = Opening GNPA<sub>t</sub> + Fresh Slippages<sub>t</sub> − Reductions (Upgrades & Recoveries<sub>t</sub> + Write-offs<sub>t</sub>)</span>
+        </div>
+        <div class="segmented-control">
+          <button class="segment-btn active icici-active" id="npa-btn-icici" onclick="selectNpaBank('ICICI Bank')">ICICI Bank</button>
+          <button class="segment-btn" id="npa-btn-yes" onclick="selectNpaBank('Yes Bank')">Yes Bank</button>
+        </div>
+      </div>
+
+      <!-- View Controls & Year Pills -->
+      <div class="npa-view-switch">
+        <div class="segmented-control">
+          <button class="segment-btn active" id="btn-npa-view-annual" onclick="setNpaViewMode('annual')">
+            <i class="fa-solid fa-chart-column"></i> 10-Year Annual Trend (Stacked)
+          </button>
+          <button class="segment-btn" id="btn-npa-view-waterfall" onclick="setNpaViewMode('waterfall')">
+            <i class="fa-solid fa-water"></i> Single-Year Waterfall Breakdown
+          </button>
+        </div>
+
+        <div id="waterfall-year-container" style="display: none;">
+          <div class="year-pills-selector" id="year-pills-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Waterfall Stat Ribbon (Shown in Waterfall Mode) -->
+      <div class="waterfall-summary-grid" id="waterfall-stats-grid" style="display: none;">
+        <div class="waterfall-stat-card opening">
+          <div class="w-label">1. Opening Gross NPA</div>
+          <div class="w-val" id="wf-val-opening">₹54,063 Cr</div>
+          <div class="w-sub">Starting bad loans</div>
+        </div>
+        <div class="waterfall-stat-card slippages">
+          <div class="w-label">2. (+) Fresh Slippages</div>
+          <div class="w-val" id="wf-val-slippages">+₹11,039 Cr</div>
+          <div class="w-sub">New default loans</div>
+        </div>
+        <div class="waterfall-stat-card recoveries">
+          <div class="w-label">3. (-) Upgrades & Recoveries</div>
+          <div class="w-val" id="wf-val-recoveries">-₹4,716 Cr</div>
+          <div class="w-sub">Cured / cash collected</div>
+        </div>
+        <div class="waterfall-stat-card writeoffs">
+          <div class="w-label">4. (-) Write-Offs / ARC</div>
+          <div class="w-val" id="wf-val-writeoffs">-₹14,094 Cr</div>
+          <div class="w-sub">Prudential / ARC clean-up</div>
+        </div>
+        <div class="waterfall-stat-card closing">
+          <div class="w-label">5. (=) Closing Gross NPA</div>
+          <div class="w-val" id="wf-val-closing">₹46,292 Cr</div>
+          <div class="w-sub">Balance sheet closing</div>
+        </div>
+      </div>
+
+      <!-- Chart Card -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title-wrap">
+            <h3 id="npa-chart-title">ICICI Bank: 10-Year NPA Flow (Additions vs. Reductions)</h3>
+            <p id="npa-chart-subtitle">Fresh slippages (red) increase NPA; recoveries (green) and write-offs (amber) reduce NPA; line denotes closing NPA.</p>
+          </div>
+        </div>
+
+        <div class="chart-canvas-container">
+          <canvas id="npaMovementChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Forensic Accounting Insights Grid -->
+      <div class="risk-concept-grid">
+        <div class="risk-concept-card systematic">
+          <div class="concept-title">
+            <i class="fa-solid fa-broom" style="color: var(--systematic-emerald)"></i>
+            The "Kitchen Sinking" Strategy (ICICI FY2019)
+          </div>
+          <p class="concept-desc">
+            In FY2019, incoming CEO Sandeep Bakhshi took aggressive recognition to its logical extreme: ICICI wrote off <strong>₹11,249 Crore</strong> and sold a further <strong>₹2,845 Crore</strong> of bad loans (₹14,094 Cr in total), while fresh slippages fell to ₹11,039 Cr. This single-year purge wiped out legacy corporate stressed assets, clearing the way for ICICI's 5-year re-rating and return on assets (RoA) recovery.
+          </p>
+          <div class="concept-tags">
+            <span class="concept-tag systematic-tag">Write-off + sale: ₹14,094 Cr</span>
+            <span class="concept-tag systematic-tag">GNPA drop: -7,771 Cr</span>
+            <span class="concept-tag systematic-tag">PCR reset to 71%</span>
+          </div>
+        </div>
+
+        <div class="risk-concept-card idiosyncratic">
+          <div class="concept-title">
+            <i class="fa-solid fa-skull-crossbones" style="color: var(--yes-rose)"></i>
+            The Divergence & ARC Carve-Out (Yes Bank FY20 & FY23)
+          </div>
+          <p class="concept-desc">
+            Yes Bank delayed recognition for years until FY20, when slippages reached <strong>₹37,272 Crore</strong> in a single year. Recoveries could not keep pace. In FY2023, the bank sold a <strong>₹48,000 Crore</strong> stressed-loan portfolio to JC Flowers ARC (GNPA reduction of ₹18,523 Cr via write-off/sale), resetting GNPA from 13.93% to 2.17%.
+          </p>
+          <div class="concept-tags">
+            <span class="concept-tag idiosyncratic-tag">FY20 Slippage: ₹37,272 Cr</span>
+            <span class="concept-tag idiosyncratic-tag">FY23 ARC: ₹48,000 Cr portfolio</span>
+            <span class="concept-tag idiosyncratic-tag">Moratorium Mar 2020</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 4: EVENT TIMELINE & RISK DECOMPOSITION
+         ==================================================================== -->
+    <section class="view-panel" id="view-timeline">
+      <div class="section-header">
+        <div class="section-tag">
+          <i class="fa-solid fa-timeline"></i> Risk Taxonomy & Event Horizon
+        </div>
+        <h3 class="section-title">Systematic vs. Idiosyncratic Risk Decomposition</h3>
+        <p class="section-subtitle">
+          Mapping external regulatory and macro shocks (Systematic) against bank-specific governance breakdowns and strategy choices (Idiosyncratic).
+        </p>
+      </div>
+
+      <!-- Conceptual Framing Cards -->
+      <div class="risk-concept-grid">
+        <div class="risk-concept-card systematic">
+          <div class="concept-title">
+            <i class="fa-solid fa-earth-americas" style="color: var(--systematic-emerald)"></i>
+            Systematic Risk (Sector-Wide Shocks)
+          </div>
+          <p class="concept-desc">
+            Exogenous shocks that affect all financial intermediaries simultaneously. Cannot be eliminated via portfolio diversification. Transmitted through macro policies (Demonetization, COVID lockdown) and regulatory tightening (RBI AQR, Feb 12 Circular). Resilience is determined by capital buffers and pre-provision profitability.
+          </p>
+          <div class="concept-tags">
+            <span class="concept-tag systematic-tag">AQR (2015)</span>
+            <span class="concept-tag systematic-tag">Demonetization (2016)</span>
+            <span class="concept-tag systematic-tag">IBC Code (2016)</span>
+            <span class="concept-tag systematic-tag">Feb 12 Circular (2018)</span>
+            <span class="concept-tag systematic-tag">IL&FS Crisis (2018)</span>
+            <span class="concept-tag systematic-tag">COVID-19 (2020)</span>
+          </div>
+        </div>
+
+        <div class="risk-concept-card idiosyncratic">
+          <div class="concept-title">
+            <i class="fa-solid fa-user-gear" style="color: var(--idiosyncratic-amber)"></i>
+            Idiosyncratic Risk (Bank-Specific Breakdown)
+          </div>
+          <p class="concept-desc">
+            Endogenous risks originating within the firm. Driven by managerial hubris, promoter concentration, internal underwriting standards, executive conflicts of interest, and deceptive accounting. These risks are theoretically diversifiable but severe when compounded with high leverage.
+          </p>
+          <div class="concept-tags">
+            <span class="concept-tag idiosyncratic-tag">ICICI Corporate Concentration</span>
+            <span class="concept-tag idiosyncratic-tag">Chanda Kochhar Conflict</span>
+            <span class="concept-tag idiosyncratic-tag">Yes Bank Divergence Concealment</span>
+            <span class="concept-tag idiosyncratic-tag">Rana Kapoor Ouster</span>
+            <span class="concept-tag idiosyncratic-tag">March 2020 Moratorium</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Event Highlight Banner (Visible when user clicks an event) -->
+      <div class="active-event-banner" id="active-event-banner">
+        <div class="active-event-info">
+          <h4 id="active-event-name">Event Selected: RBI Asset Quality Review (AQR)</h4>
+          <p id="active-event-summary">Period: FY2016 | Type: Systematic Regulatory Shock | Affected: All Indian Banks</p>
+        </div>
+        <button class="btn-clear-event" onclick="clearEventHighlight()">
+          <i class="fa-solid fa-xmark"></i> Clear Chart Highlight
+        </button>
+      </div>
+
+      <!-- Timeline Filter Controls -->
+      <div class="timeline-filter-bar">
+        <div class="timeline-filter-pills">
+          <button class="timeline-pill active" id="tpill-all" onclick="filterTimeline('all')">
+            All Events (14)
+          </button>
+          <button class="timeline-pill pill-systematic" id="tpill-systematic" onclick="filterTimeline('systematic')">
+            <i class="fa-solid fa-earth-americas"></i> Systematic Shocks (7)
+          </button>
+          <button class="timeline-pill pill-icici" id="tpill-icici" onclick="filterTimeline('icici')">
+            <i class="fa-solid fa-shield"></i> ICICI Idiosyncratic (3)
+          </button>
+          <button class="timeline-pill pill-yes" id="tpill-yes" onclick="filterTimeline('yesbank')">
+            <i class="fa-solid fa-triangle-exclamation"></i> Yes Bank Idiosyncratic (4)
+          </button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">
+          <i class="fa-solid fa-hand-pointer"></i> Click any card to highlight its timeframe on charts
+        </div>
+      </div>
+
+      <!-- Timeline Stream Grid -->
+      <div class="timeline-stream" id="timeline-stream-container">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 5: SHARE PRICE & MARKET RISK
+         ==================================================================== -->
+    <section class="view-panel" id="view-stock">
+      <div class="section-header">
+        <div class="section-tag">
+          <i class="fa-solid fa-arrow-trend-up"></i> Market Valuation & Equity Risk
+        </div>
+        <h3 class="section-title">Stock Price Performance & Crisis Event Returns</h3>
+        <p class="section-subtitle">
+          How equity markets priced credit stress: ICICI Bank vs. Yes Bank vs. Nifty Bank benchmark (Monthly closes from April 2014 to March 2024).
+        </p>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="stock-controls-bar">
+        <div class="control-group">
+          <span class="control-label">Price Display:</span>
+          <div class="segmented-control">
+            <button class="segment-btn active" id="btn-stock-norm" onclick="setStockMode('normalized')">
+              Normalized Return (Base 100 = Apr 2014)
+            </button>
+            <button class="segment-btn" id="btn-stock-abs" onclick="setStockMode('absolute')">
+              Adjusted Price (₹)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="control-label">Series:</span>
+          <button class="segment-btn active" id="btn-stock-nifty" onclick="toggleStockSeries('nifty')">
+            <i class="fa-solid fa-chart-line"></i> Nifty Bank: ON
+          </button>
+          <button class="segment-btn" id="btn-stock-peers" onclick="toggleStockSeries('peers')">
+            <i class="fa-solid fa-users"></i> Peer Lines: OFF
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Stock Chart Card -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title-wrap">
+            <h3 id="stock-chart-title">10-Year Cumulative Equity Return (Base 100 = April 2014)</h3>
+            <p id="stock-chart-subtitle">ICICI Bank (cyan), Yes Bank (red), and Nifty Bank benchmark (purple) with crisis event markers.</p>
+          </div>
+        </div>
+
+        <div class="chart-canvas-container" style="height: 440px;">
+          <canvas id="stockPriceChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Statistical Risk-Return Metrics Grid -->
+      <div class="stock-stats-grid">
+        <div class="stock-stat-box">
+          <div class="box-label">Nifty Bank Correlation (r)</div>
+          <div class="box-val-row">
+            <span class="box-main-val" id="ss-corr-icici" style="color: var(--icici-cyan)">–</span>
+            <span class="box-sub-val">ICICI</span>
+            <span class="box-main-val" id="ss-corr-yes" style="color: var(--yes-rose); margin-left: 0.8rem;">–</span>
+            <span class="box-sub-val">Yes Bank</span>
+          </div>
+          <p id="ss-corr-note" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Yes Bank decoupled from the banking index due to governance crisis
+          </p>
+        </div>
+
+        <div class="stock-stat-box">
+          <div class="box-label">Market Beta (β vs. Nifty Bank)</div>
+          <div class="box-val-row">
+            <span class="box-main-val" id="ss-beta-icici" style="color: var(--icici-cyan)">–</span>
+            <span class="box-sub-val">ICICI</span>
+            <span class="box-main-val" id="ss-beta-yes" style="color: var(--yes-rose); margin-left: 0.8rem;">–</span>
+            <span class="box-sub-val">Yes Bank</span>
+          </div>
+          <p id="ss-beta-note" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">
+            High beta coupled with low correlation indicates extreme idiosyncratic volatility
+          </p>
+        </div>
+
+        <div class="stock-stat-box">
+          <div class="box-label">10-Year Total Return</div>
+          <div class="box-val-row">
+            <span class="box-main-val" id="ss-ret-icici" style="color: var(--systematic-emerald)">–</span>
+            <span class="box-sub-val">ICICI</span>
+            <span class="box-main-val" id="ss-ret-yes" style="color: var(--yes-rose); margin-left: 0.8rem;">–</span>
+            <span class="box-sub-val">Yes</span>
+          </div>
+          <p id="ss-ret-note" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Nifty Bank benchmark delivered +266.6% over same period
+          </p>
+        </div>
+
+        <div class="stock-stat-box">
+          <div class="box-label">Peak-to-Trough Max Drawdown</div>
+          <div class="box-val-row">
+            <span class="box-main-val" id="ss-dd-icici" style="color: var(--systematic-emerald)">–</span>
+            <span class="box-sub-val">ICICI</span>
+            <span class="box-main-val" id="ss-dd-yes" style="color: var(--yes-rose); margin-left: 0.8rem;">–</span>
+            <span class="box-sub-val">Yes</span>
+          </div>
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Monthly close fell from ₹363 (Jul 2018) to ₹10.8 (Aug 2021); intraday low ~₹5.6 in Mar 2020
+          </p>
+        </div>
+      </div>
+
+      <!-- Event Window Return Performance Table -->
+      <div class="section-header" style="margin-top: 2rem;">
+        <h4 style="font-family: var(--font-heading); font-size: 1.25rem;">Event Window Return Analysis (Stress Period Matrix)</h4>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Asset price response across defined systematic and idiosyncratic event windows. "vs Nifty" = return minus Nifty Bank return over the same window (percentage points), isolating the bank-specific component.
+        </p>
+      </div>
+
+      <div class="event-perf-table-wrap">
+        <table class="event-perf-table">
+          <thead>
+            <tr>
+              <th>Event Window</th>
+              <th>Period</th>
+              <th>Risk Type</th>
+              <th>ICICI Bank Return</th>
+              <th>Yes Bank Return</th>
+              <th>Nifty Bank Benchmark</th>
+              <th>Analytical Takeaway</th>
+            </tr>
+          </thead>
+          <tbody id="event-window-tbody">
+            <!-- Populated dynamically via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 6: COMPARATIVE SYNTHESIS & MATRIX
+         ==================================================================== -->
+    <section class="view-panel" id="view-comparative">
+      <div class="section-header">
+        <div class="section-tag">
+          <i class="fa-solid fa-scale-balanced"></i> Side-by-Side Synthesis
+        </div>
+        <h3 class="section-title">ICICI Bank vs. Yes Bank: Forensic Credit Risk Matrix</h3>
+        <p class="section-subtitle">
+          Direct comparative decomposition across balance sheet metrics, underwriting models, governance oversight, and crisis resolution mechanisms.
+        </p>
+      </div>
+
+      <!-- Dual Comparison Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title-wrap">
+            <h3 id="comp-chart-title">Direct Comparison: GNPA Ratio (%) Over 10 Financial Years</h3>
+            <p id="comp-chart-subtitle">ICICI Bank (cyan) vs. Yes Bank (red). Values labelled at each year.</p>
+          </div>
+          <div class="segmented-control">
+            <button class="segment-btn active" onclick="setComparativeMetric('gnpa_pct')">GNPA %</button>
+            <button class="segment-btn" onclick="setComparativeMetric('nnpa_pct')">NNPA %</button>
+            <button class="segment-btn" onclick="setComparativeMetric('pcr_pct')">PCR %</button>
+            <button class="segment-btn" onclick="setComparativeMetric('slippage_ratio')">Slippage %</button>
+            <button class="segment-btn" onclick="setComparativeMetric('credit_cost')">Credit Cost %</button>
+          </div>
+        </div>
+
+        <div class="chart-canvas-container">
+          <canvas id="comparativeChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Forensic Scorecard Matrix Table -->
+      <div class="matrix-table-card">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th class="matrix-dim">Risk Dimension</th>
+              <th class="col-icici"><i class="fa-solid fa-shield"></i> ICICI Bank (Systemic Survivor)</th>
+              <th class="col-yes"><i class="fa-solid fa-triangle-exclamation"></i> Yes Bank (Idiosyncratic Failure)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="matrix-dim">Asset Scale & Systemic Importance</td>
+              <td class="matrix-icici-val">
+                Domestic Systemically Important Bank (D-SIB). Gross advances expanded from ₹3.99 Lakh Cr (FY15) to <strong>₹12.95 Lakh Cr</strong> (FY24).
+              </td>
+              <td class="matrix-yes-val">
+                Mid-sized private lender. Gross advances peaked at ₹2.45 Lakh Cr (FY19), shrank to ₹1.96 Lakh Cr (FY20), recovered to <strong>₹2.34 Lakh Cr</strong> (FY24).
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Nature of Credit Stress</td>
+              <td class="matrix-icici-val">
+                <strong>Cyclical & Sectoral:</strong> Excessive concentration in infrastructure, power, steel, and mining consortiums during the capex cycle downturn.
+              </td>
+              <td class="matrix-yes-val">
+                <strong>Governance & Evergreening:</strong> Aggressive promoter lending, fee-hungry structured debt, loan concealment, and intentional RBI reporting divergence.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Peak Asset Quality Impairment</td>
+              <td class="matrix-icici-val">
+                GNPA peaked at <strong>8.84% (₹54,063 Cr)</strong> in FY2018. Slippages peaked at ₹33,544 Cr (FY2017).
+              </td>
+              <td class="matrix-yes-val">
+                GNPA rose to <strong>16.80% (₹32,878 Cr)</strong> in FY2020. Fresh slippages were <strong>₹37,272 Cr</strong> in FY20 alone.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Provisioning & Credit Cost Burden</td>
+              <td class="matrix-icici-val">
+                Credit cost peaked at <strong>2.85%</strong> in FY2019. Provision coverage ratio (PCR) built up systematically from 40.2% (FY17) to <strong>~81%</strong> (FY24).
+              </td>
+              <td class="matrix-yes-val">
+                Credit cost reached <strong>16.74%</strong> in FY2020 — far above operating profit — producing a net loss of ₹16,418 Cr and eroding regulatory capital.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Governance Breakdown & Leadership</td>
+              <td class="matrix-icici-val">
+                CEO Chanda Kochhar resigned in 2018 amid Videocon conflict-of-interest allegations. Smooth institutional succession to Sandeep Bakhshi.
+              </td>
+              <td class="matrix-yes-val">
+                In Sept 2018 the RBI cut CEO Rana Kapoor's tenure short to Jan 2019 due to gross asset divergence. Enforcement Directorate later arrested the founder.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Resolution Mechanism</td>
+              <td class="matrix-icici-val">
+                <strong>Organic Internal Turnaround:</strong> Aggressive write-offs and NPA sales (₹14,094 Cr in FY19), rapid shift to secured retail (mortgages/auto), and branch deposit franchise mobilization.
+              </td>
+              <td class="matrix-yes-val">
+                <strong>State-Orchestrated Bailout:</strong> RBI moratorium (March 2020), ₹10,000 Cr SBI-led consortium equity injection, and subsequent ₹48,000 Cr stressed-loan sale to JC Flowers ARC.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Capital Rebuilding & Solvency</td>
+              <td class="matrix-icici-val">
+                Raised ₹15,000 Cr institutional equity in 2020 at high valuation; internal accruals funded organic growth. Tier-1 CAR restored above 16%.
+              </td>
+              <td class="matrix-yes-val">
+                Severe equity dilution via FPO at ₹12/share. Lock-in restrictions imposed on private bank shareholders to prevent panic sell-off.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Stock Market Rating (10-Yr)</td>
+              <td class="matrix-icici-val">
+                <strong>+435% Total Return:</strong> Strong re-rating as asset quality and earnings recovered, well ahead of the Nifty Bank (+267%).
+              </td>
+              <td class="matrix-yes-val">
+                <strong>-72% Total Return:</strong> Heavy shareholder losses; the monthly close fell ~97% from its 2018 peak before stabilising after the 2020 reconstruction.
+              </td>
+            </tr>
+            <tr>
+              <td class="matrix-dim">Key Lesson for Risk Managers</td>
+              <td class="matrix-icici-val">
+                Early balance sheet cleaning ("kitchen sinking") and diversified retail deposit franchises allow large banks to absorb large cyclical shocks.
+              </td>
+              <td class="matrix-yes-val">
+                Concealing credit divergence creates a compounding liquidity run. Governance failure converts manageable credit risk into fatal solvency risk.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 7: METHODOLOGY, REGULATORY & DATA NOTES
+         ==================================================================== -->
+    <section class="view-panel" id="view-methodology">
+      <div class="section-header">
+        <div class="section-tag">
+          <i class="fa-solid fa-book-bookmark"></i> Academic Documentation & Governance
+        </div>
+        <h3 class="section-title">Methodology, Data Notes & Regulatory Framework</h3>
+        <p class="section-subtitle">
+          Underlying data architecture, regulatory classification standards, data break documentation, and empirical peer selection rationale.
+        </p>
+      </div>
+
+      <div class="methodology-grid">
+        <!-- Card 1: Regulatory Framework -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <div class="method-icon"><i class="fa-solid fa-gavel"></i></div>
+            <h3>RBI Regulatory Framework & 90-Day Norm</h3>
+          </div>
+          <div class="method-card-body">
+            <p>
+              In India, Non-Performing Asset (NPA) classification is governed by RBI's Prudential Norms on Income Recognition, Asset Classification and Provisioning (IRAC):
+            </p>
+            <ul class="method-list">
+              <li><strong>90-Day Delinquency:</strong> Interest or principal installment remains overdue for more than 90 days across term loans and overdraft accounts.</li>
+              <li><strong>Asset Quality Review (AQR 2015):</strong> RBI inspection eliminated informal loan restructuring and forced transparent classification of stressed accounts.</li>
+              <li><strong>Feb 12, 2018 Circular:</strong> Withdrew CDR, SDR, S4A schemes; mandated 1-day default reporting into the CRILC database.</li>
+              <li><strong>Mandatory Divergence Disclosure:</strong> Banks must disclose divergences exceeding 15% between RBI audit and bank-reported NPAs.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Card 2: Data Sources -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <div class="method-icon"><i class="fa-solid fa-database"></i></div>
+            <h3>Data Sources & Empirical Integrity</h3>
+          </div>
+          <div class="method-card-body">
+            <p>
+              All quantitative metrics are sourced directly from verified regulatory and capital market publications:
+            </p>
+            <ul class="method-list">
+              <li><strong>RBI Publications:</strong> Statistical Tables Relating to Banks in India & Report on Trend and Progress of Banking in India.</li>
+              <li><strong>Pillar 3 Disclosures:</strong> Bank annual reports, Basel III capital adequacy disclosures, and audited financial statements.</li>
+              <li><strong>Investor Presentations:</strong> Quarterly earnings releases and management conference call disclosures.</li>
+              <li><strong>Market Price Data:</strong> Yahoo Finance API (NSE: ICICIBANK.NS, YESBANK.NS, and peer tickers) adjusted for corporate actions and stock splits.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Card 3: Data Breaks -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <div class="method-icon"><i class="fa-solid fa-scissors"></i></div>
+            <h3>Data Breaks & Structural Events</h3>
+          </div>
+          <div class="method-card-body">
+            <p>
+              Several structural corporate transactions occurred during the 10-year observation window:
+            </p>
+            <ul class="method-list">
+              <li><strong>Yes Bank Moratorium (March 2020):</strong> Reconstruction scheme led to equity dilution, AT1 bond write-down, and altered advance base. Post-FY20 reflects reconstructed entity.</li>
+              <li><strong>HDFC Bank Merger (July 2023):</strong> Reverse merger of HDFC Ltd into HDFC Bank. FY2024 figures include merged mortgage assets (~₹24.8 Lakh Cr advances).</li>
+              <li><strong>IDFC First Bank Merger (Dec 2018):</strong> IDFC Bank merged with Capital First. Pre-FY19 data reflects standalone IDFC Bank.</li>
+              <li><strong>Bandhan Bank (March 2018):</strong> Listed in March 2018; historical data starts from FY2019.</li>
+                          <li><strong>Ratio basis:</strong> GNPA ratios match each bank's reported figures (GNPA as % of gross advances / gross customer assets). Gross advances are back-derived as Gross NPA ÷ reported GNPA ratio, so NNPA, slippage, write-off and credit-cost ratios share one consistent denominator. PCR is computed excluding technical write-offs (Gross NPA − Net NPA) ÷ Gross NPA.</li>
+              <li><strong>Changing peer sample:</strong> The Yes Bank peer average uses 2 banks (Federal, RBL) for FY2015, 3 for FY2016–18 (IDFC First from FY2016) and 4 from FY2019 (Bandhan). Part of any shift in the peer average around FY2016 and FY2019 reflects composition, not credit trends. The tooltip shows n for each year.</li>
+              <li><strong>Stock prices:</strong> Prices are split/bonus-adjusted (Yahoo Finance), so "Adjusted Price" levels can differ from historical traded prices; returns, beta and correlation are unaffected.</li>
+              <li><strong>Flow-data verification:</strong> ICICI slippages (FY16–24; FY24 derived from annual-report write-offs, sales and recoveries), write-offs incl. NPA sales (FY19–24) and provisions (FY18–19, FY23–24) are matched to bank filings; ICICI recoveries for FY19, FY23 and FY24 reconcile exactly to reported figures. Yes Bank slippages (FY19, FY20, FY23; FY19–20 from the 2019-20 Annual Report NPA movement schedule) and provisions (FY20–23) are matched to filings. Remaining flow figures are compiled estimates; other recoveries are derived from the NPA identity.</li>
+              <li><strong>Yes Bank FY2022 reconciliation gap:</strong> Opening GNPA + slippages − write-offs falls ₹30 Cr short of closing GNPA, implying slightly negative recoveries; the waterfall floors recoveries at zero for that year.</li>
+</ul>
+          </div>
+        </div>
+
+        <!-- Card 4: Peer Selection -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <div class="method-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+            <h3>Peer Group Selection Rationale</h3>
+          </div>
+          <div class="method-card-body">
+            <p>
+              To ensure valid economic comparisons, two distinct benchmark peer groups were curated:
+            </p>
+            <ul class="method-list">
+              <li><strong>ICICI Bank Peer Group (Large Tier-1 Private Banks):</strong> HDFC Bank, Axis Bank, Kotak Mahindra Bank. Shared characteristics: nationwide footprint, multi-lakh-crore advance base, corporate-retail mix.</li>
+              <li><strong>Yes Bank Peer Group (Mid-sized Private Banks):</strong> Federal Bank, RBL Bank, IDFC First Bank, Bandhan Bank. Shared characteristics: second-tier private banks below the top-4 franchises, with higher cost of deposits and greater reliance on bulk/wholesale funding. Yes Bank grew faster than this group (advances ~₹2.4 Lakh Cr at the FY2019 peak) but is classed as mid-sized on market share (~2% of system credit), post-2020 scale and funding profile, which matched these peers rather than HDFC/ICICI/Axis/Kotak.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Card 5: Mathematical Formulations -->
+        <div class="method-card" style="grid-column: 1 / -1;">
+          <div class="method-card-header">
+            <div class="method-icon"><i class="fa-solid fa-calculator"></i></div>
+            <h3>Mathematical Formulations & Formula Reference Table</h3>
+          </div>
+          <div class="method-card-body">
+            <div class="event-perf-table-wrap" style="margin-bottom: 0;">
+              <table class="event-perf-table">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>Exact Formula</th>
+                    <th>Economic Significance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Gross NPA Ratio (%)</strong></td>
+                    <td><code>(Gross NPA / Gross Advances) × 100</code></td>
+                    <td>Measures total recognized portfolio default rate under 90-day DPD norm.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Net NPA Ratio (%)</strong></td>
+                    <td><code>(Net NPA / (Gross Advances − Provisions)) × 100</code></td>
+                    <td>Measures unprovisioned credit risk directly threatening bank equity.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Provision Coverage Ratio (%)</strong></td>
+                    <td><code>(Provisions Held / Gross NPA) × 100</code></td>
+                    <td>Measures loss-absorption buffer protecting the bank against bad loan default.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Slippage Ratio (%)</strong></td>
+                    <td><code>(Fresh Slippages / Gross Advances) × 100</code></td>
+                    <td>Annual rate of new asset quality deterioration entering NPA pool.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Credit Cost (%)</strong></td>
+                    <td><code>(Provision Expense / Gross Advances) × 100</code></td>
+                    <td>P&L burden of provisioning; directly erodes Return on Assets (RoA).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Write-Off Ratio (%)</strong></td>
+                    <td><code>(Gross Write-offs / Gross Advances) × 100</code></td>
+                    <td>Rate of bad loan derecognition / transfer to bad bank or ARC.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <div class="footer-left">
+        <p><strong>Financial Risk Analytics (FRA) Lab — Credit Risk Deep Dive</strong></p>
+        <p style="font-size: 0.78rem; color: var(--text-muted);">MBA Group Project 2 | Authored for academic & executive risk evaluation</p>
+      </div>
+      <div class="footer-tags">
+        <span class="footer-tag">Vanilla JS</span>
+        <span class="footer-tag">Chart.js v4</span>
+        <span class="footer-tag">Glassmorphism UI</span>
+        <span class="footer-tag">RBI Banking Data</span>
+        <span class="footer-tag">yfinance Market Feed</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Data Files -->
+  <script src="data/credit_risk_data.js"></script>
+  <script src="data/stock_data.js"></script>
+  <script src="data/events_timeline.js"></script>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+
+</body>
+</html>
